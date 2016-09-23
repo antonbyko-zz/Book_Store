@@ -8,6 +8,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 
+
+
+
+
 @SpringBootApplication
 public class BookstoreApplication {
 	private static final Logger log = LoggerFactory.getLogger(BookstoreApplication.class);
@@ -16,11 +20,17 @@ public class BookstoreApplication {
 	}
 	
 	@Bean
-	public CommandLineRunner studentDemo(BookstoreRepository repository) {
+	public CommandLineRunner studentDemo(Book_StoreRepository repository,CategoryRepository c_repository) {
 		return (args) -> {
 			log.info("save a couple of books");
-			repository.save(new Book_Store("Java Introduction", " Dr. Liang ",2005,12345));
-			repository.save(new Book_Store("Python Introduction", " Mr. Python ",2008,54321));
+			
+			c_repository.save(new Category("IT"));
+			c_repository.save(new Category("Animals"));
+			c_repository.save(new Category("Laws"));
+			
+			repository.save(new Book_Store("Java Introduction", " Dr. Liang ",2005,12345,c_repository.findByName("IT").get(0)));
+			repository.save(new Book_Store("Python Introduction", " Mr. Python ",2008,54321,c_repository.findByName("IT").get(0)));
+			
 			
 		};
 	}
